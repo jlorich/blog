@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build",
+        "command": "docker build . -t blog:latest",
+        "type": "shell",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": "$msCompile"
+      },
+      {
+        "label": "serve",
+        "command": "docker run --rm --volume=$pwd/src:/srv/jekyll -p4000:4000 --name blog -it jekyll/builder:stable jekyll serve --watch --force_polling",
+        "type": "shell",
+        "isBackground": true,
+        "problemMatcher": [
+            {
+              "pattern": [
+                {
+                  "regexp": ".",
+                  "file": 1,
+                  "location": 2,
+                  "message": 3
+                }
+              ],
+              "background": {
+                "activeOnStart": true,
+                "beginsPattern": ".*Server address.*$",
+                "endsPattern": ".",
+              }
+            }
+          ]
+      },
+      {
+        "label": "stop",
+        "command": "docker kill blog",
+        "type": "shell"
+      }
+    ]
+  }
+  
