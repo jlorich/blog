@@ -19,8 +19,9 @@ stages:
       vmImage: 'Ubuntu-16.04'
     steps:
     
-    - task: GitVersion@4
+    - task: GitVersion@5
       inputs:
+        runtime: core
       displayName: Determine Semantic Version
 
     - script: |
