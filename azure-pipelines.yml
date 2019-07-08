@@ -6,45 +6,31 @@ trigger:
 
 pr:
   autoCancel: true
+
+parameters:
+  environments:
+  - name: Staging
+    azureSubscription: Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)
+  - name: Production
+    azureSubscription: Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)
  
 variables:
-  sandboxAzureSubscription: Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)
+  sandboxAzureSubscription: 
   productionAzureSubscription: Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)
 
 stages:
-- stage: Verify
+- stage: Build
   jobs:
+  
+  # Build
   - job: Build
-    pool:
-      vmImage: 'Ubuntu-16.04'
-    steps:
-    
-    - task: GitVersion@5
-      inputs:
-        runtime: core
-      displayName: Determine Semantic Version
+  - template: templates/build.yml
 
-    - script: |
-        echo "##vso[build.updatebuildnumber]$(GITVERSION_FullSemVer)"
-      displayName: Update build number
 
-    - script: |
-        docker run --rm \
-          --volume=`pwd`/src:/srv/jekyll \
-          jekyll/builder:stable \
-          jekyll build
-      displayName: Build Jekyll site
-
-# Staging release
-- stage: Staging
-  jobs:
-  - template: templates/release.yml
-    parameters:
-      azureSubscription: $(sandboxAzureSubscription)
-
-# Production release
-- stage: Production
-  jobs:
-  - template: templates/release.yml
-    parameters:
-      azureSubscription: $(productionAzureSubscription)
+- ${{each environment in parameters.environments }}
+  - stage: ${{ environment.name }}
+    jobs:
+    - template: templates/release.yml
+      parameters:
+        azureSubscription: $(environment.azureSubscription)
+        environment: staging

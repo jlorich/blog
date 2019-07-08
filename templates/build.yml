@@ -8,8 +8,9 @@ jobs:
 
   steps:
     # Run GitVersion
-    - task: GitVersion@4
+    - task: GitVersion@5
       inputs:
+        runtime: core
       displayName: Determine Semantic Version
 
     # Update build number to GitVersion semver
