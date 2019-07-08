@@ -23,9 +23,9 @@ stages:
   - template: templates/build.yml
 
 - ${{each environment in parameters.environments }}
-  - stage: ${{ environment.name }}
-    jobs:
-    - template: templates/release.yml
-      parameters:
-        azureSubscription: $(environment.azureSubscription)
-        environment: staging
+  stage: ${{ environment.name }}
+  jobs:
+  - template: templates/release.yml
+    parameters:
+      azureSubscription: $(environment.azureSubscription)
+      environment: staging
