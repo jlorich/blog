@@ -8,11 +8,7 @@ pr:
   autoCancel: true
 
 variables:
-  environments:
-  - name: Staging
-    azureSubscription: Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)
-  - name: Production
-    azureSubscription: Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)
+  - azureSubscription: Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)
 
 stages:
 # Build
@@ -21,11 +17,16 @@ stages:
   - job: Build
   - template: templates/build.yml
 
-# Release environments
-- ${{each environment in variables.environments }}:
-  - stage: ${{ environment.name }}
-    jobs:
-    - template: templates/release.yml
-      parameters:
-        azureSubscription: ${{ environment.azureSubscription }}
-        environment: staging
+- stage: Staging
+  jobs:
+  - template: templates/release.yml
+    parameters:
+      azureSubscription: $(azureSubscription)
+      environment: staging
+
+- stage: Proudction
+  jobs:
+  - template: templates/release.yml
+    parameters:
+      azureSubscription: $(azureSubscription)
+      environment: production
