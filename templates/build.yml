@@ -30,4 +30,4 @@ jobs:
 
     # Publish the app as an artifact
     - publish: $(System.DefaultWorkingDirectory)/bin/WebApp
-    artifact: blog
+      artifact: blog
