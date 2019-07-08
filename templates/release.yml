@@ -1,5 +1,7 @@
 parameters:
   azureSubscription:
+  environment:
+  terraformStorageAccountName:
 
 jobs:
 - job: Deploy
@@ -12,13 +14,45 @@ jobs:
       artifact: blog
     
     # Apply terraform
-    - script: |
-        cd terraform
-        terraform apply
-      displayName: Apply terraform infrastructure
+    - task: AzureCLI@1
+        displayName: Terraform Deploy
+        inputs:
+        azureSubscription: $(azureSubscription)
+        scriptLocation: inlineScript
+        workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
+        addSpnToEnvironment: true
+        inlineScript: |
+          endDate=`date -d "30 minutes" '+%Y-%m-%dT%H:%MZ'`
+          sas=`az storage container generate-sas \
+                 -n $web \
+                 --account-name ${{ parameters.terraformStorageAccountName }} \
+                 --https-only \
+                 --permissions dlrw \
+                 --expiry $end \
+                 -otsv`
+
+          # Init terraform env
+          terraform init \
+            -backend-config="access_key=$sas" \
+            -backend-config="storage_account_name=${{ parameters['storageAccountName'] }}" \
+            -input=false 
+
+          # Fail on errors, output every command and result to the log
+          set -e -x
+
+          # Generate a Terraform plan
+          terraform plan \
+            -var environment="${{ parameters.environment }}" \
+            -out=${{ parameters.environment }}.tfplan \
+            -input=false 
+
+          # Apply Terraform Template
+          terraform apply ${{ parameters.environment }}.tfplan
 
     # Update storage account var
     - script: |
+        # Fail on errors, output every command and result to the log
+        set -e -x
         echo "##vso[task.setvariable variable=storageAccountName]`terraform output storage_account`"
       displayName: Load details from terraform infrastructure
     
