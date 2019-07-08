@@ -1,0 +1,32 @@
+parameters:
+  environment:
+
+jobs:
+- job: Build
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+    # Run GitVersion
+    - task: GitVersion@4
+      inputs:
+      displayName: Determine Semantic Version
+
+    # Update build number to GitVersion semver
+    - script: |
+        echo "##vso[build.updatebuildnumber]$(GITVERSION_FullSemVer)"
+      displayName: Update build number
+
+    # Compile jekyll site
+    - script: |
+        docker run --rm \
+          --volume=`pwd`/src:/srv/jekyll \
+          jekyll/builder:stable \
+          jekyll build
+        
+        cp -r ./ $(Build.ArtifactStagingDirectory)
+      displayName: Build Jekyll site
+
+    # Publish the app as an artifact
+    - publish: $(System.DefaultWorkingDirectory)/bin/WebApp
+    artifact: blog

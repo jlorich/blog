@@ -1,0 +1,36 @@
+parameters:
+  azureSubscription:
+
+variables:
+  azureSubscription: ${{ parameters.azureSubscription }}
+
+jobs:
+- job: Deploy
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+    # Load artifacts
+    - download: current
+    artifact: blog
+    
+    # Apply terraform
+    - script: |
+      cd terraform
+      terraform apply
+    displayName: Apply terraform infrastructure
+
+    # Update storage account var
+    - script: |
+      echo "##vso[task.setvariable variable=storageAccountName]`terraform output storage_account`"
+    displayName: Load details from terraform infrastructure
+    
+    # AZCopy release
+    - task: AzureFileCopy@3
+    inputs:
+      SourcePath: $(Pipeline.Workspace)/blog
+      azureSubscription: $(parameters.azureSubscription)
+      Destination: AzureBlob
+      storage: $(storageAccountName)
+      ContainerName: $web
+    displayName: Deploy to blob storage
