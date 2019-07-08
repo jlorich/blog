@@ -17,12 +17,10 @@ variables:
 stages:
 - stage: Build
   jobs:
-  
-  # Build
   - job: Build
   - template: templates/build.yml
 
-- ${{each environment in parameters.environments }}
+- ${{each environment in parameters.environments }}:
   stage: ${{ environment.name }}
   jobs:
   - template: templates/release.yml
