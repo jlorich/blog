@@ -14,7 +14,6 @@ stages:
 # Build
 - stage: Build
   jobs:
-  - job: Build
   - template: templates/build.yml
 
 - stage: Staging
