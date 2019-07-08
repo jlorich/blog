@@ -15,15 +15,16 @@ jobs:
 
     # Update build number to GitVersion semver
     - script: |
-        echo "##vso[build.updatebuildnumber]$(GitVersion.FullSemVer)"
+        echo '##vso[build.updatebuildnumber]$(GitVersion.FullSemVer)'
       displayName: Update build number
 
     # Compile jekyll site
     - script: |
         docker run --rm \
           --volume=`pwd`/src:/srv/jekyll \
+          --volume=`pwd`/src/_site:/srv/jekyll/_site \
           jekyll/builder:stable \
-          jekyll build
+          jekyll build -d /out
         
         cp -r ./ $(Build.ArtifactStagingDirectory)
       displayName: Build Jekyll site
