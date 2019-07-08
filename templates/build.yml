@@ -20,11 +20,12 @@ jobs:
 
     # Compile jekyll site
     - script: |
+        set -e -x
         docker run --rm \
           --volume=`pwd`/src:/srv/jekyll \
           --volume=`pwd`/src/_site:/srv/jekyll/_site \
           jekyll/builder:stable \
-          jekyll build -d /out
+          jekyll build
         
         cp -r ./ $(Build.ArtifactStagingDirectory)
       displayName: Build Jekyll site
