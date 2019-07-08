@@ -31,5 +31,5 @@ jobs:
       displayName: Build Jekyll site
 
     # Publish the app as an artifact
-    - publish: $(System.DefaultWorkingDirectory)/bin/WebApp
+    - publish: $(Build.ArtifactStagingDirectory)
       artifact: blog
