@@ -13,21 +13,21 @@ jobs:
     
     # Apply terraform
     - script: |
-      cd terraform
-      terraform apply
-    displayName: Apply terraform infrastructure
+        cd terraform
+        terraform apply
+      displayName: Apply terraform infrastructure
 
     # Update storage account var
     - script: |
-      echo "##vso[task.setvariable variable=storageAccountName]`terraform output storage_account`"
-    displayName: Load details from terraform infrastructure
+        echo "##vso[task.setvariable variable=storageAccountName]`terraform output storage_account`"
+      displayName: Load details from terraform infrastructure
     
     # AZCopy release
     - task: AzureFileCopy@3
-    inputs:
-      SourcePath: $(Pipeline.Workspace)/blog
-      azureSubscription: $(parameters.azureSubscription)
-      Destination: AzureBlob
-      storage: $(storageAccountName)
-      ContainerName: $web
-    displayName: Deploy to blob storage
+      inputs:
+        SourcePath: $(Pipeline.Workspace)/blog
+        azureSubscription: $(parameters.azureSubscription)
+        Destination: AzureBlob
+        storage: $(storageAccountName)
+        ContainerName: $web
+        displayName: Deploy to blob storage
