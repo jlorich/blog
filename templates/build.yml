@@ -8,7 +8,7 @@ jobs:
 
   steps:
     # Run GitVersion
-    - task: GitVersion@5
+    - task: GitVersion (Preview)@5
       inputs:
         runtime: core
       displayName: Determine Semantic Version
