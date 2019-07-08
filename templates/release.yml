@@ -1,9 +1,6 @@
 parameters:
   azureSubscription:
 
-variables:
-  azureSubscription: ${{ parameters.azureSubscription }}
-
 jobs:
 - job: Deploy
   pool:
