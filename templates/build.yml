@@ -15,7 +15,7 @@ jobs:
 
     # Update build number to GitVersion semver
     - script: |
-        echo "##vso[build.updatebuildnumber]$(GITVERSION_FullSemVer)"
+        echo "##vso[build.updatebuildnumber]$(GitVersion.FullSemVer)"
       displayName: Update build number
 
     # Compile jekyll site
