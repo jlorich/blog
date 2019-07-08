@@ -9,7 +9,7 @@ jobs:
   steps:
     # Load artifacts
     - download: current
-    artifact: blog
+      artifact: blog
     
     # Apply terraform
     - script: |
