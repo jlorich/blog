@@ -26,7 +26,7 @@ jobs:
     - task: AzureFileCopy@3
       inputs:
         SourcePath: $(Pipeline.Workspace)/blog
-        azureSubscription: $(parameters.azureSubscription)
+        azureSubscription: ${{ parameters.azureSubscription }}
         Destination: AzureBlob
         storage: $(storageAccountName)
         ContainerName: $web
