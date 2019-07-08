@@ -24,7 +24,7 @@ jobs:
         inlineScript: |
             endDate=`date -d "30 minutes" '+%Y-%m-%dT%H:%MZ'`
             sas=`az storage container generate-sas \
-                -n $web \
+                -n '$web' \
                 --account-name ${{ parameters.terraformStorageAccountName }} \
                 --https-only \
                 --permissions dlrw \
