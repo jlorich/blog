@@ -16,22 +16,22 @@ jobs:
     # Apply terraform
     - task: terraform-cli@0
       inputs:
-        azureSubscription: $(azureSubscription)
+        azureSubscription: ${{ parameters.azureSubscription }}
         workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
         scriptLocation: 'inlineScript'
         inlineScript: |
-            # Fail on errors, output every command and result to the log
-            set -e -x
+          # Fail on errors, output every command and result to the log
+          set -e -x
 
-            # Init terraform env
-            terraform init \
-              -input=false 
+          # Init terraform env
+          terraform init \
+            -input=false 
 
           # Generate a Terraform plan
           terraform plan \
-          -var environment="${{ parameters.environment }}" \
-          -out=${{ parameters.environment }}.tfplan \
-          -input=false 
+            -var environment="${{ parameters.environment }}" \
+            -out=${{ parameters.environment }}.tfplan \
+            -input=false 
 
           # Apply Terraform Template
           terraform apply ${{ parameters.environment }}.tfplan
