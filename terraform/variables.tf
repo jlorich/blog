@@ -1,15 +1,16 @@
 variable "environment" {
-    default = "dev"
+  default = "dev"
 }
 
 variable "name" {
-    default = "blog"
+  default = "blog"
 }
 
 variable "location" {
-    default = "West US 2"
+  default = "West US 2"
 }
 
 variable "prefix" {
-    default = "jlorich"
+  default = "jlorich"
 }
+

@@ -14,47 +14,27 @@ jobs:
       artifact: blog
     
     # Apply terraform
-    - task: AzureCLI@1
-      displayName: Terraform Deploy
+    - task: terraform-cli@0
       inputs:
         azureSubscription: $(azureSubscription)
-        scriptLocation: inlineScript
         workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
-        addSpnToEnvironment: true
+        scriptLocation: 'inlineScript'
         inlineScript: |
             # Fail on errors, output every command and result to the log
             set -e -x
 
-            # Set terraform auth variables
-            export ARM_CLIENT_ID=$servicePrincipalId
-            export ARM_CLIENT_SECRET=$servicePrincipalKey
-            export ARM_SUBSCRIPTION_ID=$(az account show --query id | xargs)
-            export ARM_TENANT_ID=$(az account show --query tenantId | xargs)
-
-            # Generate SAS Token to storage account
-            endDate=`date -d "30 minutes" '+%Y-%m-%dT%H:%MZ'`
-            sas=`az storage container generate-sas \
-                -n '$web' \
-                --account-name ${{ parameters.terraformStorageAccountName }} \
-                --https-only \
-                --permissions dlrw \
-                --expiry $end \
-                -otsv`
-
             # Init terraform env
             terraform init \
-            -backend-config="access_key=$sas" \
-            -backend-config="storage_account_name=${{ parameters['storageAccountName'] }}" \
-            -input=false 
+              -input=false 
 
-            # Generate a Terraform plan
-            terraform plan \
-            -var environment="${{ parameters.environment }}" \
-            -out=${{ parameters.environment }}.tfplan \
-            -input=false 
+          # Generate a Terraform plan
+          terraform plan \
+          -var environment="${{ parameters.environment }}" \
+          -out=${{ parameters.environment }}.tfplan \
+          -input=false 
 
-            # Apply Terraform Template
-            terraform apply ${{ parameters.environment }}.tfplan
+          # Apply Terraform Template
+          terraform apply ${{ parameters.environment }}.tfplan
 
     # Update storage account var
     - script: |
