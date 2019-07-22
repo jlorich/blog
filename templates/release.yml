@@ -14,18 +14,13 @@ jobs:
       artifact: blog
     
     # Apply terraform
-    - task: terraform-cli@0
+    - task: terraformcli@0
       inputs:
         azureSubscription: ${{ parameters.azureSubscription }}
         workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
-        scriptLocation: 'inlineScript'
-        inlineScript: |
+        script: |
           # Fail on errors, output every command and result to the log
           set -e -x
-
-          # Init terraform env
-          terraform init \
-            -input=false 
 
           # Generate a Terraform plan
           terraform plan \
