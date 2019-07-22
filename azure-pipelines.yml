@@ -15,7 +15,7 @@ jobs:
   steps:
   - task: terraformcli@0
     inputs:
-      azureSubscription: ${{ parameters.azureSubscription }}
+      azureSubscription: $(parameters.azureSubscription)
       workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
       script: |
         # Fail on errors, output every command and result to the log
@@ -23,12 +23,12 @@ jobs:
 
         # Generate a Terraform plan
         terraform plan \
-          -var environment="${{ parameters.environment }}" \
-          -out=${{ parameters.environment }}.tfplan \
+          -var environment=staging \
+          -out=staging.tfplan \
           -input=false 
 
         # Apply Terraform Template
-        terraform apply ${{ parameters.environment }}.tfplan
+        terraform apply staging.tfplan
         
 # stages:
 # - stage: Build
