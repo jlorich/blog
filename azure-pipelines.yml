@@ -15,7 +15,7 @@ jobs:
   steps:
   - task: terraformcli@0
     inputs:
-      azureSubscription: $(parameters.azureSubscription)
+      azureSubscription: $(azureSubscription)
       workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
       script: |
         # Fail on errors, output every command and result to the log
