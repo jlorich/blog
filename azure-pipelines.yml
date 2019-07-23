@@ -9,13 +9,15 @@ pr:
 
 variables:
   azureSubscription: Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)
-
+  environment: staging
 jobs:
 - job: TestTerraformCLI
   steps:
   - task: terraformcli@0
     inputs:
-      azureSubscription: $(azureSubscription)
+      targetAzureSubscription: 'Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)'
+      backendStorageAccountName: 'jlorichtfstate'
+      backendStateFileKey: '$(environment).terraform.tfstate'
       workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
       script: |
         # Fail on errors, output every command and result to the log
