@@ -33,14 +33,8 @@ jobs:
           # Apply Terraform Template
           terraform apply ${{ parameters.environment }}.tfplan
 
-    # Update storage account var
-    - script: |
-        # Fail on errors, output every command and result to the log
-        set -e -x
-
-        # Set storageAccountName variable from terraform output
-        echo "##vso[task.setvariable variable=storageAccountName]`terraform output storage_account`"
-      displayName: Load details from terraform infrastructure
+          # Set storageAccountName variable from terraform output
+          echo "##vso[task.setvariable variable=storageAccountName]`terraform output storage_account`"
 
     # Configure storage account to support static websites
     - task: AzureCLI@1
