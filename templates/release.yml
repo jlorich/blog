@@ -12,11 +12,13 @@ jobs:
     # Load artifacts
     - download: current
       artifact: blog
-    
+
     # Apply terraform
     - task: terraformcli@0
       inputs:
-        azureSubscription: ${{ parameters.azureSubscription }}
+        targetAzureSubscription: ${{ parameters.azureSubscription }}
+        targetStorageAccountName: 'jlorichtfstate'
+        backendStateFileKey: '$(environment).terraform.tfstate'
         workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
         script: |
           # Fail on errors, output every command and result to the log
@@ -35,8 +37,22 @@ jobs:
     - script: |
         # Fail on errors, output every command and result to the log
         set -e -x
+
+        # Set storageAccountName variable from terraform output
         echo "##vso[task.setvariable variable=storageAccountName]`terraform output storage_account`"
       displayName: Load details from terraform infrastructure
+
+    # Configure storage account to support static websites
+    - task: AzureCLI@1
+      inputs:
+        azureSubscription: 'Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          # Fail on errors, output every command and result to the log
+          set -e -x
+
+          # Configure static sites
+          az storage blob service-properties update --account-name $(storageAccountName) --static-website  --index-document index.html --404-document 404.html
     
     # AZCopy release
     - task: AzureFileCopy@3

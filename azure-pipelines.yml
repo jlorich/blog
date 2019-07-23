@@ -10,45 +10,24 @@ pr:
 variables:
   azureSubscription: Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)
   environment: staging
-jobs:
-- job: TestTerraformCLI
-  steps:
-  - task: terraformcli@0
-    inputs:
-      targetAzureSubscription: 'Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)'
-      targetStorageAccountName: 'jlorichtfstate'
-      backendStateFileKey: '$(environment).terraform.tfstate'
-      workingDirectory: $(System.DefaultWorkingDirectory)/terraform
-      script: |
-        # Fail on errors, output every command and result to the log
-        set -e -x
-
-        # Generate a Terraform plan
-        terraform plan \
-          -var environment=staging \
-          -out=staging.tfplan \
-          -input=false 
-
-        # Apply Terraform Template
-        terraform apply staging.tfplan
         
-# stages:
-# - stage: Build
-#   jobs:
-#   - template: templates/build.yml
+stages:
+- stage: Build
+  jobs:
+  - template: templates/build.yml
 
-# - stage: Staging
-#   jobs:
-#   - template: templates/release.yml
-#     parameters:
-#       azureSubscription: $(azureSubscription)
-#       environment: staging
-#       terraformStorageAccountName: jlorichtfstate
+- stage: Staging
+  jobs:
+  - template: templates/release.yml
+    parameters:
+      azureSubscription: $(azureSubscription)
+      environment: staging
+      terraformStorageAccountName: jlorichtfstate
 
-# - stage: Production
-#   jobs:
-#   - template: templates/release.yml
-#     parameters:
-#       azureSubscription: $(azureSubscription)
-#       environment: production
-#       terraformStorageAccountName: jlorichtfstate
+- stage: Production
+  jobs:
+  - template: templates/release.yml
+    parameters:
+      azureSubscription: $(azureSubscription)
+      environment: production
+      terraformStorageAccountName: jlorichtfstate
