@@ -54,5 +54,5 @@ jobs:
           # Upload files
           az storage blob upload-batch \
             -s $(Pipeline.Workspace)/blog \
-            -d $web \
+            -d \$web \
             --account-name $(storageAccountName)
