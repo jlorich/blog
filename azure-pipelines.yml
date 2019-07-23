@@ -18,7 +18,6 @@ jobs:
       targetAzureSubscription: 'Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)'
       backendStorageAccountName: 'jlorichtfstate'
       backendStateFileKey: '$(environment).terraform.tfstate'
-      workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
       script: |
         # Fail on errors, output every command and result to the log
         set -e -x
