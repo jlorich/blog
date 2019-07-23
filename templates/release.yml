@@ -36,7 +36,7 @@ jobs:
           # Set storageAccountName variable from terraform output
           echo "##vso[task.setvariable variable=storageAccountName]`terraform output storage_account`"
 
-    # Configure storage account to support static websites
+    # Configure storage account and upload files
     - task: AzureCLI@1
       inputs:
         azureSubscription: 'Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)'
@@ -47,13 +47,9 @@ jobs:
 
           # Configure static sites
           az storage blob service-properties update --account-name $(storageAccountName) --static-website  --index-document index.html --404-document 404.html
-    
-    # AZCopy release
-    - task: AzureFileCopy@3
-      inputs:
-        SourcePath: $(Pipeline.Workspace)/blog
-        azureSubscription: ${{ parameters.azureSubscription }}
-        Destination: AzureBlob
-        storage: $(storageAccountName)
-        ContainerName: $web
-        displayName: Deploy to blob storage
+
+          # Upload files
+          az storage blob upload-batch \
+            -s $(Pipeline.Workspace)/blog \
+            -d $web \
+            --account-name $(storageAccountName)
