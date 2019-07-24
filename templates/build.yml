@@ -27,7 +27,7 @@ jobs:
           jekyll/builder:stable \
           jekyll build
         
-        cp -r ./ $(Build.ArtifactStagingDirectory)
+        cp -r ./src/_site/ $(Build.ArtifactStagingDirectory)
       displayName: Build Jekyll site
 
     # Publish the app as an artifact
