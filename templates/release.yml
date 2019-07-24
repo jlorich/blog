@@ -18,7 +18,7 @@ jobs:
       inputs:
         targetAzureSubscription: ${{ parameters.azureSubscription }}
         targetStorageAccountName: '${{ parameters.terraformStorageAccountName }}'
-        backendStateFileKey: '${{environment}}.terraform.tfstate'
+        backendStateFileKey: '${{ parameters.environment }}.terraform.tfstate'
         workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
         script: |
           # Fail on errors, output every command and result to the log
