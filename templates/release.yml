@@ -17,8 +17,8 @@ jobs:
     - task: terraformcli@0
       inputs:
         targetAzureSubscription: ${{ parameters.azureSubscription }}
-        targetStorageAccountName: 'jlorichtfstate'
-        backendStateFileKey: '$(environment).terraform.tfstate'
+        targetStorageAccountName: '${{ parameters.terraformStorageAccountName }}'
+        backendStateFileKey: '${{environment}}.terraform.tfstate'
         workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
         script: |
           # Fail on errors, output every command and result to the log
