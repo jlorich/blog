@@ -53,7 +53,7 @@ jobs:
 
           # Upload files
           az storage blob sync \
-            -s $(Pipeline.Workspace)/blog
+            -s $(Pipeline.Workspace)/blog \
             -c \$web \
             --account-name $(storageAccountName) \
             
