@@ -39,6 +39,12 @@ jobs:
           # Set storageAccountName variable from terraform output
           echo "##vso[task.setvariable variable=storageAccountName]$STORAGE_ACCOUNT"
 
+    - script: |
+        wget -O azcopy.tar.gz https://aka.ms/downloadazcopylinux64
+        tar -xf azcopy.tar.gz
+        sudo ./install.sh
+      displayName: Install AZCopy
+
     # Configure storage account and upload files
     - task: AzureCLI@1
       inputs:
@@ -50,13 +56,6 @@ jobs:
 
           # Configure static sites
           az storage blob service-properties update --account-name $(storageAccountName) --static-website  --index-document index.html --404-document 404.html
-
-          # Hack to trigger install
-          sudo az storage blob sync \
-            -s $(Pipeline.Workspace)/blog \
-            -c \$web \
-            --account-name $(storageAccountName) || true
-
 
           # Upload files
           az storage blob sync \
