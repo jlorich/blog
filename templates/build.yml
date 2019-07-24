@@ -14,20 +14,23 @@ jobs:
       displayName: Determine Semantic Version
 
     # Update build number to GitVersion semver
-    - script: |
-        echo '##vso[build.updatebuildnumber]$(GitVersion.FullSemVer)'
+    - script: echo '##vso[build.updatebuildnumber]$(GitVersion.FullSemVer)'
       displayName: Update build number
 
     # Compile jekyll site
     - script: |
+        # Fail on errors, output every command and result to the log
         set -e -x
+
+        # Build the blog using the public jekyll/builder container
+        # mount the the output directory to be the artifact staging directory we'll publish next
         docker run --rm \
           --volume=`pwd`/src:/srv/jekyll \
-          --volume=$(Build.ArtifactStagingDirectory):/srv/jekyll/_site \
+          --volume=$(Build.ArtifactStagingDirectory)/out:/srv/jekyll/_site \
           jekyll/builder:stable \
           jekyll build
       displayName: Build Jekyll site
 
     # Publish the app as an artifact
-    - publish: $(Build.ArtifactStagingDirectory)
+    - publish: $(Build.ArtifactStagingDirectory)/out
       artifact: blog
