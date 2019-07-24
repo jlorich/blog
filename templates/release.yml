@@ -39,6 +39,10 @@ jobs:
           # Set storageAccountName variable from terraform output
           echo "##vso[task.setvariable variable=storageAccountName]$STORAGE_ACCOUNT"
 
+    # The Azure CLI __MUST__ be installed and available at the following path before using `az storage blob sync` 
+    #
+    # See: https://github.com/Azure/azure-cli/issues/10024
+    #
     - script: |
         wget -O azcopy.tar.gz https://aka.ms/downloadazcopylinux64
         tar -xf azcopy.tar.gz
