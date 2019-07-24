@@ -55,7 +55,7 @@ jobs:
           sudo az storage blob sync \
             -s $(Pipeline.Workspace)/blog \
             -c \$web \
-            --account-name $(storageAccountName)
+            --account-name $(storageAccountName) || true
 
 
           # Upload files
