@@ -43,6 +43,7 @@ jobs:
         wget -O azcopy.tar.gz https://aka.ms/downloadazcopylinux64
         tar -xf azcopy.tar.gz
         sudo ./install.sh
+        sudo ln -s /usr/bin/azcopy /usr/local/bin/azcopy
       displayName: Install AZCopy
 
     # Configure storage account and upload files
