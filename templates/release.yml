@@ -52,9 +52,7 @@ jobs:
           az storage blob service-properties update --account-name $(storageAccountName) --static-website  --index-document index.html --404-document 404.html
 
           # Upload files
-          az storage blob sync \
+          sudo az storage blob sync \
             -s $(Pipeline.Workspace)/blog \
             -c \$web \
-            --account-name $(storageAccountName) \
-            
-            
+            --account-name $(storageAccountName)
