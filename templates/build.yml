@@ -32,8 +32,8 @@ jobs:
           # Log in to our container registry
           az acr login -n ${{ parameters.containerRegistryName }}
 
-          # Pull the most recent builder image which we'll use as a cache
-          docker pull ${{ parameters.containerRegistryName }}.azurecr.io/blog:latest
+          # Pull the most recent builder image which we'll use as a cache, ignore misses
+          docker pull ${{ parameters.containerRegistryName }}.azurecr.io/blog:latest || true
 
           # Create the builder image
           docker build \
