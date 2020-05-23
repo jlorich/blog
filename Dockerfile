@@ -43,7 +43,7 @@ FROM base as build
 
 COPY . .
 
-ENTRYPOINT jekyll build
+ENTRYPOINT cd src && jekyll build
 
 
 # --------------------------------
