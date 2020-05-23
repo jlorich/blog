@@ -3,3 +3,4 @@
 src/_site
 .jekyll-cache
 .sass-cache
+.bundle

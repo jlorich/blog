@@ -1,0 +1,7 @@
+{
+    "files.exclude": {
+        ".jekyll-cache": true,
+        ".sass-cache": true,
+        ".bundle": true
+    }
+}
