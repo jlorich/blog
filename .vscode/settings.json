@@ -1,7 +1,6 @@
 {
     "files.exclude": {
-        ".jekyll-cache": true,
-        ".sass-cache": true,
-        ".bundle": true
+        "src/.jekyll-cache": true,
+        "src/.sass-cache": true
     }
 }
