@@ -1,6 +1,6 @@
-#
+# --------------------------------
 # Base Container
-#
+# --------------------------------
 FROM ruby:2.7.1-buster as base
 
 # Avoid warnings by switching to noninteractive
@@ -31,15 +31,29 @@ RUN mkdir -p /workspaces/blog/src
 WORKDIR /workspaces/blog
 COPY ./src/Gemfile ./src/
 
-ENV BUNDLE_PATH /bundle
-
 # Install the specified gems
 RUN cd ./src && bundle install
 
 
-#
+# --------------------------------
+# Build Container
+# --------------------------------
+
+FROM base as build
+
+RUN mkdir -p /workspaces/blog/src
+
+WORKDIR /workspaces/blog/src
+
+COPY ./src/Gemfile .
+RUN bundle install
+
+COPY ./src .
+
+
+# --------------------------------
 # Dev Container
-#
+# --------------------------------
 
 FROM base as dev
 
