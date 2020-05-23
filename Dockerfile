@@ -1,18 +1,10 @@
-FROM ruby:2.7.1-buster
+#
+# Base Container
+#
+FROM ruby:2.7.1-buster as base
 
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
-
-# Dependency Versions
-
-# Latest version of Terraform may be found at https://www.terraform.io/downloads.html
-ARG TERRAFORM_VERSION=0.12.25
-
-# Latest version of Terrform Linter may be found at https://github.com/terraform-linters/tflint/releases
-ARG TFLINT_VERSION=0.16.0
-
-# Create a temp directory for downloads
-RUN mkdir -p /tmp/downloads
 
 # Configure apt and install generic packages
 RUN apt-get update \
@@ -33,6 +25,35 @@ RUN apt-get update \
         # Combine stderr and stdout to screen
         2>&1
 
+# Set up our workspace directory and copy in the Gemfile
+RUN mkdir -p /workspaces/blog/src
+
+WORKDIR /workspaces/blog
+COPY ./src/Gemfile ./src/
+
+ENV BUNDLE_PATH /bundle
+
+# Install the specified gems
+RUN cd ./src && bundle install
+
+
+#
+# Dev Container
+#
+
+FROM base as dev
+
+
+# Dependency Versions
+
+# Latest version of Terraform may be found at https://www.terraform.io/downloads.html
+ARG TERRAFORM_VERSION=0.12.25
+
+# Latest version of Terrform Linter may be found at https://github.com/terraform-linters/tflint/releases
+ARG TFLINT_VERSION=0.16.0
+
+# Create a temp directory for downloads
+RUN mkdir -p /tmp/downloads
 
 # This Dockerfile adds a non-root user with sudo access. Use the "remoteUser"
 # property in devcontainer.json to use it. On Linux, the container user's GID/UIDs
@@ -59,14 +80,3 @@ RUN curl -sSL -o /tmp/downloads/terraform.zip https://releases.hashicorp.com/ter
     && mv tflint /usr/local/bin \
     && cd ~ \ 
     && apt-get install -y graphviz
-
-# Set up our workspace directory and copy in the Gemfile
-RUN mkdir -p /workspaces/blog/src
-
-WORKDIR /workspaces/blog
-COPY ./src/Gemfile ./src/
-
-ENV BUNDLE_PATH /bundle
-
-# Install the specified gems
-RUN cd ./src && bundle install
