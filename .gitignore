@@ -1,6 +1,5 @@
 .terraform
 *.tfstate*
 src/_site
-.jekyll-cache
-.sass-cache
-.bundle
+**/.jekyll-cache
+**/.sass-cache

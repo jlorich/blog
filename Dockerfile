@@ -41,14 +41,9 @@ RUN cd ./src && bundle install
 
 FROM base as build
 
-RUN mkdir -p /workspaces/blog/src
+COPY . .
 
-WORKDIR /workspaces/blog/src
-
-COPY ./src/Gemfile .
-RUN bundle install
-
-COPY ./src .
+ENTRYPOINT jekyll build
 
 
 # --------------------------------
