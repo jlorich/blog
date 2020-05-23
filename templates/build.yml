@@ -42,8 +42,8 @@ jobs:
               -t builder .
 
           # Tag and push the latest builder version for later cacheign
-          docker tag builder ${{containerRegistryName}}.azurecr.io/blog:latest
-          docker push ${{containerRegistryName}}.azurecr.io/blog:latest
+          docker tag builder ${{ parameters.containerRegistryName }}.azurecr.io/blog:latest
+          docker push ${{ parameters.containerRegistryName }}.azurecr.io/blog:latest
 
           # Build the blog
           docker run \

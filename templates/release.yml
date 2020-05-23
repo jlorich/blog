@@ -59,9 +59,6 @@ jobs:
           # Fail on errors, output every command and result to the log
           set -e -x
 
-          # Configure static sites
-          az storage blob service-properties update --account-name $(storageAccountName) --static-website  --index-document index.html --404-document 404.html
-
           # Upload files
           az storage blob sync \
             -s $(Pipeline.Workspace)/blog \
