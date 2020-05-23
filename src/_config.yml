@@ -1,66 +1,52 @@
-# Jekyll configuration
-#markdown: redcarpet
-#highlighter: pygments
+# Build settings
+permalink: /blog/:year/:title/
 markdown: kramdown
-highlighter: rouge
-paginate: 5
-language: 'en-us'
+highlighter: pygments
+plugins: [jekyll-paginate-v2]
 
-# Website info
-name: "Hi, I'm Joey"
-description: "A beautiful narrative written with the world's most elegant publishing platform. The story begins here."
+pagination:
+  enabled: true
+  per_page: 5
+  permalink: "/page/:num/"
+  sort_reverse: true
 
-short_url: 'jekyller.github.io/jasper/'
-google_analytics: UA-69281367-1
-disqus: username
-# edit baseurl to simply '/' if using as your personal page (instead of a project page)
-baseurl: /
+encoding: utf-8
 
-# Permalinks
-permalink: /:title
-# permalink: /author/:username
-# permalink: /tag/:tag
+source: .
+destination: _site
+sass:
+  sass_dir: _sass
+  style: compressed # expanded
 
-# gems and other configs
-plugins: [jekyll-paginate]
+# SEO settings
+title: Joey Lorich
+description: "A free Jekyll theme for download"
+keywords: "Jekyll, theme, free, download, SEO, blog, web"
+url: http://nandomoreira.me
+baseurl: "/"
 
-# Additional settings available on the front-matter
-# Site logo in the index.html (as in demo.ghost.io)
-# Author's page cover in _layouts/author.html
-# The same for page.html and tag.html layouts
-# Post's page cover as a per-post basis _posts/...
-# Disqus comments as a per-post basis
-# ...
+google_analytics: UA-52446115-1
+repo: http://github.com/jlorich/blog
+disqus_shortname: "nandothemes"
+disqus_site_shortname: "nandothemes"
 
+# Author settings
+author:
+  name: Joey Lorich
+  job: "@Microsoft"
+  bio: "I'm an IoT, DevOps, distributed systems, and organizational processes nerd"
+  thumb: /images/author.jpg
+  email: joseph@lorich.me
+  url: https://josephlorich.net
+  github: https://github.com/jlorich
+  twitter: https://twitter.com/joeylorich
+  linkedin: https://linkedin.com/in/jlorich
 
-# Settings for builing master branch with travis-ci
-# with jekyll-travis
+# navbar pages
+navbar:
+  - slug: about
+    title: About
+  - slug: blog
+    title: Blog
 
-# Settings for deploy rake task
-# Username and repo of Github repo, e.g.
-# https://github.com/USERNAME/REPO.git
-# username defaults to ENV['GIT_NAME'] used by Travis
-# repo defaults to USERNAME.github.io
-# Branch defaults to "source" for USERNAME.github.io
-# or "master" otherwise
-safe: false
-lsi: false
-username: jekyller
-repo: jasper
-branch: master
-relative_source: ./
-destination: ./_site/
-production_url:  https://jekyller.github.io/jasper/
-source_url:  https://github.com/jekyller/jasper/
-
-exclude:
-  - README.md
-  - Rakefile
-  - Gemfile
-  - Gemfile.lock
-  - changelog.md
-  - "*.Rmd"
-  - vendor
-  - .travis.yml
-  - node_modules
-  - .git
+exclude: ["config.rb", "src", "Gemfile", "Gemfile.lock", "package.json","README.md", "Rakefile"]

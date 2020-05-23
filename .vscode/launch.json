@@ -5,14 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
+            "type": "edge",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:4000",            
+            "version": "dev",
+            "name": "Launch Edge",
+            "url": "http://localhost:4000",
             "webRoot": "${workspaceFolder}/src/_site",
             "preLaunchTask": "serve",
-            "postDebugTask": "stop",
-            //"runtimeExecutable": "C:\\Program Files (x86)\\Microsoft\\Edge Dev\\Application\\msedge.exe"
-        }
+            "postDebugTask": "stop"
+        },
     ]
 }

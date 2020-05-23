@@ -3,19 +3,25 @@
     "tasks": [
       {
         "label": "build",
-        "command": "docker build . -t blog:latest",
+        "command": "bundle exec jekyll build",
         "type": "shell",
         "group": {
           "kind": "build",
           "isDefault": true
         },
+        "options": {
+          "cwd": "${workspaceFolder}/src"
+        },
         "problemMatcher": "$msCompile"
       },
       {
         "label": "serve",
-        "command": "docker run --rm --volume=$pwd/src:/srv/jekyll -p4000:4000 --name blog -it jekyll/builder:stable jekyll serve --watch --force_polling",
+        "command": "bundle exec jekyll serve --watch 0.0.0.0:4000",
         "type": "shell",
         "isBackground": true,
+        "options": {
+          "cwd": "${workspaceFolder}/src"
+        },
         "problemMatcher": [
             {
               "pattern": [
@@ -36,9 +42,9 @@
       },
       {
         "label": "stop",
-        "command": "docker kill blog",
-        "type": "shell"
-      }
+        "type": "shell",
+        "command": "pkill -f jekyll"
+      },
     ]
   }
   
