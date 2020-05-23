@@ -15,8 +15,9 @@ stages:
 - stage: Build
   jobs:
   - template: templates/build.yml
-  - azureSubscription: $(azureSubscription)
-  - containerRegistryName: jlblogdevacr
+    parameters:
+      azureSubscription: $(azureSubscription)
+      containerRegistryName: jlblogdevacr
 
 - stage: Staging
   jobs:
