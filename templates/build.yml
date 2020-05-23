@@ -1,4 +1,5 @@
 parameters:
+  azureSubscription:
   containerRegistryName:
 
 jobs:
@@ -21,7 +22,7 @@ jobs:
     - task: AzureCLI@2
       inputs:
         displayName: Compile Blog
-        azureSubscription: 'Visual Studio Enterprise(e97d8b6e-d05b-4507-9c06-f7b528f65f7d)'
+        azureSubscription: ${{ parameters.azureSubscription }}
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
