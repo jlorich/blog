@@ -21,3 +21,7 @@ variable "cdn_location" {
 variable "prefix" {
   default = "jlorich"
 }
+
+variable "dns_resource_group" {
+  default = "dns-prod-rg" # where does DNS live for the appropriate zone.  DNS usually is managed manually.
+}
