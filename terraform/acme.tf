@@ -49,11 +49,6 @@ resource "azurerm_key_vault" "default" {
       "update"
     ]
   }
-
-  network_acls {
-    default_action = "Deny"
-    bypass         = "AzureServices"
-  }
 }
 
 resource "azurerm_key_vault_certificate" "default" {
