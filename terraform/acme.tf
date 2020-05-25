@@ -2,22 +2,22 @@ provider "acme" {
   server_url = "https://acme-v02.api.letsencrypt.org/directory"
 }
 
-resource "tls_private_key" "private_key" {
-  count = "${var.environment == "production" ? 1 : 0}"
+data "azurerm_client_config" "current" {
+}
+
+resource "tls_private_key" "default" {
   algorithm = "RSA"
 }
 
-resource "acme_registration" "reg" {
-  count = "${var.environment == "production" ? 1 : 0}"
-  account_key_pem = "${tls_private_key.private_key.private_key_pem}"
+resource "acme_registration" "default" {
+  account_key_pem = tls_private_key.default.private_key_pem
   email_address   = "joseph@lorich.me"
 }
 
 resource "acme_certificate" "default" {
-  count = "${var.environment == "production" ? 1 : 0}"
-  account_key_pem           = "${acme_registration.reg.account_key_pem}"
-  common_name               = "joeylorich.net"
-  subject_alternative_names = ["www.joeylorich.net"]
+  account_key_pem           = acme_registration.default.account_key_pem
+  common_name               = var.environment == "production" ? var.domain : "${var.environment}.${var.domain}"
+  subject_alternative_names = var.environment == "production" ? ["www.${var.domain}"] : []
 
   dns_challenge {
     provider = "azure"
@@ -29,7 +29,6 @@ locals {
 }
 
 resource "azurerm_key_vault" "default" {
-  count = "${var.environment == "production" ? 1 : 0}"
   name                        = local.key_vault_name
   location                    = azurerm_resource_group.default.location
   resource_group_name         = azurerm_resource_group.default.name
@@ -61,8 +60,7 @@ resource "azurerm_key_vault" "default" {
 }
 
 resource "azurerm_key_vault_certificate" "default" {
-  count = "${var.environment == "production" ? 1 : 0}"
-  name         = "joeylorich.net"
+  name         = "joeylorich-net-${substr(var.environment, 0, 2)}"
   key_vault_id = azurerm_key_vault.default.id
 
   certificate {
