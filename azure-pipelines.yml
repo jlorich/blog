@@ -17,7 +17,7 @@ stages:
   - template: templates/build.yml
     parameters:
       azureSubscription: $(azureSubscription)
-      containerRegistryName: jlblogdevacr
+      containerRegistryName: jlorich
 
 - stage: Staging
   jobs:

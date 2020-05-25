@@ -56,9 +56,9 @@ Though not strictly an IoT session, this one sits high on my list because it's a
 
 In my experience working in the IoT world, the robutness around process for developing and deploying applications often lags behind those in the cloud-native application space, even though it's as imporatant or more.  With every IoT firmware or edge release there's the possibility of introducing problems into millions of devices.  Being able to have a robust and well-tested DevOps process is so incredible important, and this talk covers the future of DevOps with Azure, Azure DevOps, and Github.
 
- ## [7. SQL Server on Linux and containers for developers](https://mybuild.microsoft.com/sessions/15345d1a-f4bf-419b-8a3d-f6b3dbfc384d)
+## [7. SQL Server on Linux and containers for developers](https://mybuild.microsoft.com/sessions/15345d1a-f4bf-419b-8a3d-f6b3dbfc384d)
 
-*Speaker: *Bob Ward - Principal Architect, Microsoft*
+*Speaker: Bob Ward - Principal Architect, Microsoft*
 
 The world is generating data at an unimaginably fast and ever-increasing rate.  As we gather more and more data, the concept of Data Gravit becomes incredibly important.  We need to perform analytics closer and closer to where the data is generated. In the IoT world this means storaing and processing data on the [Edge](https://docs.microsoft.com/en-us/azure/iot-edge/about-iot-edge).  This session covers SQL Server runnign on Linux and Containers, a critical component in any robust edge IoT deployment.
 
