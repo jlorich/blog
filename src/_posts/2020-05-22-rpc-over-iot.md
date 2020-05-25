@@ -4,8 +4,10 @@ title:  "Remote Procedure Calls over IoT"
 comments: true
 date:   2020-05-23
 image: /images/2020-05-22-rpc-over-iot.jpg
-categories: iot connectivity azure
+categories: iot connectivity azure 
 ---
+
+# Hello world
 
 <h1>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</h1>
 
