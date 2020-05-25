@@ -47,9 +47,7 @@ resource "azurerm_key_vault" "default" {
       "get",
       "create",
       "delete",
-      "update",
-      "sign",
-      "verify"
+      "update"
     ]
   }
 
