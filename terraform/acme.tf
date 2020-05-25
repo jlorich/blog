@@ -1,5 +1,5 @@
 provider "acme" {
-  server_url = "https://acme-staging-v02.api.letsencrypt.org/directory
+  server_url = "https://acme-staging-v02.api.letsencrypt.org/directory"
 }
 
 data "azurerm_client_config" "current" {
@@ -32,12 +32,11 @@ locals {
 }
 
 resource "azurerm_key_vault" "default" {
-  name                        = local.key_vault_name
-  location                    = azurerm_resource_group.default.location
-  resource_group_name         = azurerm_resource_group.default.name
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-
-  sku_name = "standard"
+  name                = local.key_vault_name
+  location            = azurerm_resource_group.default.location
+  resource_group_name = azurerm_resource_group.default.name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  sku_name            = "standard"
 
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id
