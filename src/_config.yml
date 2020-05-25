@@ -6,6 +6,7 @@ plugins: [jekyll-paginate-v2]
 
 kramdown:
   enable_coderay: true
+  input: GFM
 
 pagination:
   enabled: true
