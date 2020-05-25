@@ -4,6 +4,9 @@ markdown: kramdown
 highlighter: pygments
 plugins: [jekyll-paginate-v2]
 
+kramdown:
+  enable_coderay: true
+
 pagination:
   enabled: true
   per_page: 5
