@@ -3,7 +3,7 @@ provider "azurerm" {
 }
 
 terraform {
-  #backend "azurerm" {}
+  backend "azurerm" {}
 }
 
 resource "azurerm_resource_group" "default" {
