@@ -1,5 +1,5 @@
 provider "acme" {
-  server_url = "https://acme-v02.api.letsencrypt.org/directory"
+  server_url = "https://acme-staging-v02.api.letsencrypt.org/directory
 }
 
 data "azurerm_client_config" "current" {
@@ -11,7 +11,7 @@ resource "tls_private_key" "default" {
 
 resource "acme_registration" "default" {
   account_key_pem = tls_private_key.default.private_key_pem
-  email_address   = "joseph@lorich.me"
+  email_address   = "admin@${var.domain}"
 }
 
 resource "acme_certificate" "default" {
