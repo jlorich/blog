@@ -22,7 +22,7 @@ resource "acme_certificate" "default" {
   dns_challenge {
     provider = "azure"
     config = {
-      AZURE_RESOURCE_GROUP = var.dns_resource_group
+      AZURE_RESOURCE_GROUP = azurerm_resource_group.default.name
     }
   }
 }
