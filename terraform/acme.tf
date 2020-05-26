@@ -43,31 +43,30 @@ resource "azurerm_key_vault" "default" {
     default_action = "Allow"
   }
 
-  access_policy = [
-    # Allow the current identity (e.g. whatever is running Terraform) to manage this KeyVault
-    {
-      tenant_id = data.azurerm_client_config.current.tenant_id
-      object_id = data.azurerm_client_config.current.object_id
+  # Allow the current identity (e.g. whatever is running Terraform) to manage this KeyVault
+  access_policy    
+  {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
 
-      certificate_permissions = [
-        "get",
-        "create",
-        "import",
-        "delete",
-        "update"
-      ]
-    },
+    certificate_permissions = [
+      "get",
+      "create",
+      "import",
+      "delete",
+      "update"
+    ]
+  }
 
-    # Allow Azure CDN to be able to get secrets from this KeyVault
-    {
-      tenant_id = data.azurerm_client_config.current.tenant_id
-      object_id = azuread_service_principal.cdn.object_id
+  # Allow Azure CDN to be able to get secrets from this KeyVault
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = azuread_service_principal.cdn.object_id
 
-      secret_permissions = [
-        "get"
-      ]
-    },
-  ]
+    secret_permissions = [
+      "get"
+    ]
+  }
 }
 
 resource "azurerm_key_vault_certificate" "default" {
