@@ -50,6 +50,7 @@ resource "azurerm_key_vault" "default" {
     certificate_permissions = [
       "get",
       "create",
+      "import",
       "delete",
       "update"
     ]
