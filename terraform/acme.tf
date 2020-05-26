@@ -68,7 +68,7 @@ resource "azurerm_key_vault_certificate" "default" {
 
   certificate_policy {
     issuer_parameters {
-      name = "CN=Fake LE Root X1"
+      name = "Unknown"
     }
 
     key_properties {
