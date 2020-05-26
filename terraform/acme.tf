@@ -68,7 +68,7 @@ resource "azurerm_key_vault_certificate" "default" {
 
   certificate_policy {
     issuer_parameters {
-      name = "Let's Encrypt"
+      name = "Fake LE Intermediate X1"
     }
 
     key_properties {
