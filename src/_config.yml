@@ -1,12 +1,9 @@
 # Build settings
 permalink: /blog/:year/:title/
 markdown: kramdown
-highlighter: pygments
+highlighter: rouge
 plugins: [jekyll-paginate-v2]
 
-kramdown:
-  enable_coderay: true
-  input: GFM
 
 pagination:
   enabled: true

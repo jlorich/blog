@@ -4,8 +4,19 @@ title:  "Remote Procedure Calls over IoT"
 comments: true
 date:   2020-05-23
 image: /images/2020-05-22-rpc-over-iot.jpg
-categories: iot connectivity azure 
+categories: iot connectivity azure
 ---
+
+```csharp
+
+using hello;
+
+public class Test {
+    public Test(){
+        Console.WriteLine("suck it trebek");
+    }
+}
+```
 
 # Hello world
 
