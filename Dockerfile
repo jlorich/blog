@@ -30,6 +30,7 @@ RUN mkdir -p /workspaces/blog/src
 
 WORKDIR /workspaces/blog
 COPY ./src/Gemfile ./src/
+COPY ./src/Gemfile.lock ./src/
 
 # Install the specified gems
 RUN cd ./src && bundle install
