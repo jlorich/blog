@@ -42,33 +42,46 @@ resource "azurerm_key_vault" "default" {
     bypass         = "AzureServices"
     default_action = "Allow"
   }
+}
 
+resource "azurerm_key_vault_access_policy" "pipeline" {
+  key_vault_id = azurerm_key_vault.default.id
 
-  access_policy = [
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_client_config.current.object_id
 
-    # Allow the current identity (e.g. whatever is running Terraform) to manage this KeyVault
-    {
-      tenant_id = data.azurerm_client_config.current.tenant_id
-      object_id = data.azurerm_client_config.current.object_id
+  certificate_permissions = [
+    "get",
+    "create",
+    "import",
+    "delete",
+    "update"
+  ]
+}
 
-      certificate_permissions = [
-        "get",
-        "create",
-        "import",
-        "delete",
-        "update"
-      ]
-    },
+resource "azurerm_key_vault_access_policy" "cdn" {
+  key_vault_id = azurerm_key_vault.default.id
 
-    # Allow Azure CDN to be able to get secrets from this KeyVault
-    {
-      tenant_id = data.azurerm_client_config.current.tenant_id
-      object_id = azuread_service_principal.cdn.object_id
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = azuread_service_principal.cdn.object_id
 
-      secret_permissions = [
-        "get"
-      ]
-    }
+  secret_permissions = [
+    "get"
+  ]
+}
+
+resource "azurerm_key_vault_access_policy" "example" {
+  key_vault_id = azurerm_key_vault.example.id
+
+  tenant_id = "00000000-0000-0000-0000-000000000000"
+  object_id = "11111111-1111-1111-1111-111111111111"
+
+  key_permissions = [
+    "get",
+  ]
+
+  secret_permissions = [
+    "get",
   ]
 }
 
