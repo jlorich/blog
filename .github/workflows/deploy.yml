@@ -12,6 +12,7 @@ on:
 jobs:
   # Build the blog site
   jekyll_build:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     container: jekyll/builder:4.1.0
     name: Jekyll Build Job
