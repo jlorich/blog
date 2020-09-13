@@ -3,32 +3,75 @@ name: Azure Static Web Apps CI/CD
 on:
   push:
     branches:
-      - master
+      - dev
+      - main
 
 jobs:
+  # Build the blog
   jekyll_build:
     runs-on: ubuntu-latest
     container: jekyll/builder:4.1.0
     name: Jekyll Build
     steps:
+      # Checkout Source
       - uses: actions/checkout@v2
+
+      # Build Blog
       - name: Build
         run: cd src && jekyll build
+      
+      # Upload site
+      - uses: actions/upload-artifact@v2
+        with:
+          name: blog
+          path: src/_site/
 
-  # staging_deploy:
-  #   runs-on: ubuntu-latest
-  #   name: Build and Deploy Job
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         submodules: true
-  #     - name: Jekyll Build
-  #       run: cd src && docker run --rm --volume="$PWD:/srv/jekyll" jekyll/builder:4.1.0 jekyll build
-  #     - name: Build And Deploy
-  #       id: builddeploy
-  #       uses: Azure/static-web-apps-deploy@v0.0.1-preview
-  #       with:
-  #         azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_POLITE_HILL_076F7201E }}
-  #         repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-  #         action: "upload"
-  #         app_artifact_location: "src/_site"
+  # Upload the blog to staging
+  staging_deploy:
+    name: Staging Deploy
+    runs-on: ubuntu-latest
+    needs: jekyll_build
+
+    if: github.ref == 'refs/heads/dev'
+    
+    steps:
+      # Download site
+      - uses: actions/download-artifact@v2
+        with:
+          name: blog
+      - name: test
+        run: |
+          pwd
+          ls -lah
+
+      # Deploy site to Azure Static Web Apps
+      - name: Deploy
+        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_POLITE_HILL_076F7201E }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: upload
+          app_location: .
+
+  # Upload the blog to prod
+  prod_deploy:
+    name: Production Deploy
+    runs-on: ubuntu-latest
+    needs: jekyll_build
+
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      # Download site
+      - uses: actions/download-artifact@v2
+        with:
+          name: blog
+    
+      # Deploy site to Azure Static Web Apps
+      - name: Deploy
+        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_YELLOW_DESERT_090BB0F1E }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: upload
+          app_location: .
