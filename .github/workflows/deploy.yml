@@ -17,7 +17,7 @@ jobs:
         run: |
           set -e -x
           cd src
-          docker run --rm --volume="$PWD:/srv/jekyll" -it jekyll/builder:4.1.0 jekyll build
+          docker run --rm --volume="$PWD:/srv/jekyll" jekyll/builder:4.1.0 jekyll build
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
