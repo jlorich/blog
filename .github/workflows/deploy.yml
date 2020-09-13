@@ -6,23 +6,29 @@ on:
       - master
 
 jobs:
-  build_and_deploy_job:
+  jekyll_build:
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    container: jekyll/builder:4.1.0
+    name: Jekyll Build
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: true
       - name: Build
-        run: |
-          set -e -x
-          cd src
-          docker run --rm --volume="$PWD:/srv/jekyll" jekyll/builder:4.1.0 jekyll build
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v0.0.1-preview
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_POLITE_HILL_076F7201E }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-          action: "upload"
-          app_artifact_location: "src/_site"
+        run: cd src && jekyll build
+
+  # staging_deploy:
+  #   runs-on: ubuntu-latest
+  #   name: Build and Deploy Job
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         submodules: true
+  #     - name: Jekyll Build
+  #       run: cd src && docker run --rm --volume="$PWD:/srv/jekyll" jekyll/builder:4.1.0 jekyll build
+  #     - name: Build And Deploy
+  #       id: builddeploy
+  #       uses: Azure/static-web-apps-deploy@v0.0.1-preview
+  #       with:
+  #         azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_POLITE_HILL_076F7201E }}
+  #         repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+  #         action: "upload"
+  #         app_artifact_location: "src/_site"
