@@ -39,7 +39,11 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: blog
-    
+      - name: test
+        run: |
+          pwd
+          ls -lah
+
       # Deploy site to Azure Static Web Apps
       - name: Deploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
