@@ -12,10 +12,10 @@ on:
 jobs:
   # Build the blog site
   jekyll_build:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    name: Jekyll Build Job
     runs-on: ubuntu-latest
     container: jekyll/builder:4.1.0
-    name: Jekyll Build Job
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     steps:
       # Checkout Source
       - uses: actions/checkout@v2
@@ -32,9 +32,10 @@ jobs:
 
   # Deploy to static websites
   deploy:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    name: Static Web App Deploy Job
+    needs: jekyll_build
     runs-on: ubuntu-latest
-    name: Deploy Job
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     steps:
       # Download site
       - uses: actions/download-artifact@v2
